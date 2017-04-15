@@ -26,7 +26,12 @@ void tree::add(int newint) {
 }
 
 void tree::showstats() {
-	avl(root);
+	if (avl(root)) {
+		std::cout << "AVL: no" << std::endl;
+	}
+	else {
+		std::cout << "AVL: yes" << std::endl;
+	}
 	std::cout << "min: " << min(root) << ", max: " << max(root) << ", avg: " << avg() << std::endl;
 }
 
@@ -68,15 +73,17 @@ void tree::destroy_tree(node *leaf)
 	}
 }
 
-void tree::avl(node* leaf) {
+bool tree::avl(node* leaf) {
+	bool r = false;
 	if (leaf != NULL) {
-		avl(leaf->right);
-		avl(leaf->left);
+		r |= avl(leaf->right);
+		r |= avl(leaf->left);
 		int balance = height(leaf->right) - height(leaf->left);
 		std::cout << "bal (" << leaf->key_value << ") = " << balance << " " ;
-		if (balance > 1 || balance < -1) { std::cout << "(AVL violation!)"; }
+		if (balance > 1 || balance < -1) { std::cout << "(AVL violation!)"; r = true; }
 		std::cout << std::endl;
 	}
+	return r;
 	//nothing to do!!!
 }
 

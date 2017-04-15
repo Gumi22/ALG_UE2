@@ -20,7 +20,7 @@ private:
 	node *root;
 	void insert(node*, int);
 	void destroy_tree(node*);
-	void avl(node*);
+	bool avl(node*);
 	int height(node*);
 	int min(node*);
 	int max(node*);
