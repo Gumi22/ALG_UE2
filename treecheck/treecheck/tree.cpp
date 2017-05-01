@@ -25,14 +25,35 @@ void tree::add(int newint) {
 	}
 }
 
-void tree::showstats() {
-	if (avl(root)) {
-		std::cout << "AVL: no" << std::endl;
+void tree::showstats(bool debug) {
+	if (debug) {
+		std::clock_t start;
+		start = std::clock();
+		avl(root, false);
+		double duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+		std::cout << "AVL: " << duration << " Sekunden \n" << std::endl;
+		start = std::clock();
+		min(root);
+		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+		std::cout << "MIN: " << duration << " Sekunden \n" << std::endl;
+		start = std::clock();
+		max(root);
+		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+		std::cout << "MAX: " << duration << " Sekunden \n" << std::endl;
+		start = std::clock();
+		avg();
+		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+		std::cout << "AVG: " << duration << " Sekunden \n" << std::endl;
 	}
 	else {
-		std::cout << "AVL: yes" << std::endl;
+		if (avl(root, true)) {
+			std::cout << "AVL: no" << std::endl;
+		}
+		else {
+			std::cout << "AVL: yes" << std::endl;
+		}
+		std::cout << "min: " << min(root) << ", max: " << max(root) << ", avg: " << avg() << std::endl;
 	}
-	std::cout << "min: " << min(root) << ", max: " << max(root) << ", avg: " << avg() << std::endl;
 }
 
 void tree::insert(node* leaf, int key) {
@@ -73,15 +94,17 @@ void tree::destroy_tree(node *leaf)
 	}
 }
 
-bool tree::avl(node* leaf) {
+bool tree::avl(node* leaf, bool cout) {
 	bool r = false;
 	if (leaf != NULL) {
-		r |= avl(leaf->right);
-		r |= avl(leaf->left);
+		r |= avl(leaf->right, cout);
+		r |= avl(leaf->left, cout);
 		int balance = height(leaf->right) - height(leaf->left);
-		std::cout << "bal (" << leaf->key_value << ") = " << balance << " " ;
-		if (balance > 1 || balance < -1) { std::cout << "(AVL violation!)"; r = true; }
-		std::cout << std::endl;
+		if (cout) {
+			std::cout << "bal (" << leaf->key_value << ") = " << balance << " ";
+			if (balance > 1 || balance < -1) { std::cout << "(AVL violation!)"; r = true; }
+			std::cout << std::endl;
+		}
 	}
 	return r;
 	//nothing to do!!!

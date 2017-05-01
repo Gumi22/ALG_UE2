@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <ctime> //Benötigt für Testfunktionen
 
 struct node
 {
@@ -14,13 +15,13 @@ public:
 	tree();
 	virtual ~tree();
 	void add(int);
-	void showstats();
+	void showstats(bool);
 
 private:
 	node *root;
 	void insert(node*, int);
 	void destroy_tree(node*);
-	bool avl(node*);
+	bool avl(node*, bool);
 	int height(node*);
 	int min(node*);
 	int max(node*);
